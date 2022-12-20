@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Leave of Absence Request</title>
+  <style>
+    body {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #welcome {
+      text-align: center;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+<div id="welcome">
+  <h3>Employee:<span th:text="${username}"></span></h3>
+  <h3>Dept:<span th:text="${dept}"></span></h3>
+  <h3>Type of leave:<div th:switch="${type}">
+    <span th:case="1">Sick leave</span>
+    <span th:case="2">Personal leave</span>
+    <span th:case="3">Business trip</span>
+  </div>
+  </h3>
+  <h3>Starttime of leave:<span th:text="${starttime}"></span></h3>
+  <h3>Endtime of leave:<span th:text="${endtime}"></span></h3>
+  <div style="text-align: center; padding: 10px">
+    <a style="text-decoration: none;"  href="127.0.0.1:8081/wang" target="_bank">
+      <strong>Please approve as soon as possible</strong>
+    </a>
+  </div>
+</div>
+</body>
+</html>

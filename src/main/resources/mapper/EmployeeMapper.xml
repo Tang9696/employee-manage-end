@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.employeemanageend.mapper.EmployeeMapper" >
+
+<!--查询全部用户-->
+    <resultMap id="BaseResultMap" type="com.example.employeemanageend.pojo.Employee" >
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="dep_id" property="depId" jdbcType="INTEGER"/>
+        <result column="lastname" property="lastname" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="INTEGER"/>
+        <result column="birth" property="birth" jdbcType="VARCHAR"/>
+        <result column="createtime" property="createtime" jdbcType="VARCHAR"/>
+        <result column="updatetime" property="updatetime" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"/>
+        <association property="department"
+                     select="com.example.employeemanageend.mapper.DepartmentMapper.getdept"
+                     column="dep_id"/>
+<!--        <collection property="roleUsers"-->
+<!--                    select="com.example.employeemanageend.mapper.RoleUserMapper.getroleid"-->
+<!--                    column="id"/>-->
+    </resultMap>
+    <select id="getall" resultMap="BaseResultMap">
+        select * from employee;
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select * from employee where lastname like CONCAT('%',#{lastname},'%') ORDER BY id desc limit #{pageNum},#{pageSize} ;
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(id) from employee where lastname like CONCAT('%',#{lastname},'%');
+    </select>
+
+<!--管理员登录时密码判断,只需返回一个密码-->
+    <select id="getAdminPassword" resultType="string">
+        select password from employee
+        <where>
+            <if test="username != null and username != ''">
+                lastname = #{username};
+            </if>
+        </where>
+    </select>
+
+<!--增加员工-->
+    <insert id="save">
+        insert into employee(`id`, `lastname`, `password`, `email`, `gender`, `birth`, `createtime`, `updatetime`, `dep_id`,`role`)
+                        value (null,#{lastname},#{password},#{email},#{gender}, #{birth},#{createtime},#{updatetime},#{depId},#{role});
+    </insert>
+<!--批量增加员工-->
+    <insert id="saveall">
+        insert into employee(`id`, `lastname`, `password`, `email`, `gender`, `birth`, `createtime`, `updatetime`, `dep_id`,`role`)
+            value
+        <foreach collection="list" separator="," item="item">
+            (null,#{item.lastname},#{item.password},#{item.email},#{item.gender},#{item.birth},#{item.createtime},#{item.updatetime},#{item.depId},#{item.role})
+        </foreach>
+    </insert>
+
+<!--根据id查找员工信息-->
+    <select id="getEmployeeById" resultMap="BaseResultMap">
+        select * from employee where id = #{id};
+    </select>
+
+<!--修改用户信息-->
+    <update id="updateEmployee">
+         update employee
+      <set>
+          <if test="lastname != null">
+               lastname = #{lastname},
+          </if>
+          <if test="password != null">
+              password = #{password},
+          </if>
+          <if test="email != null">
+              email = #{email},
+          </if>
+          <if test="gender != null">
+              gender = #{gender},
+          </if>
+          <if test="depId != null">
+              dep_id = #{department.id},
+          </if>
+          <if test="role != null">
+              role = #{role}
+          </if>
+          <if test="birth != null">
+              birth = #{birth},
+          </if>
+          <if test="updatetime != null">
+              updatetime = #{updatetime}
+          </if>
+      </set>
+<where>
+    id = #{id}
+</where>
+    </update>
+<!--删除-->
+    <delete id="deleteEmployee">
+        delete from employee where id = #{id};
+    </delete>
+    <!--批量删除-->
+    <delete id="batchDeleteEmployee">
+        delete from employee where id in
+        <foreach collection="list" item="id"  separator="," open="(" close=")">
+            #{id}
+        </foreach>;
+    </delete>
+
+    <!--shiro认证，根据用户名查找用户信息-->
+<!--    <select id="getEmpByName" resultMap="BaseResultMap">-->
+<!--        select * from employee where lastname = #{username};-->
+<!--    </select>-->
+
+    <!--登录验证-->
+    <select id="login" resultMap="BaseResultMap">
+        select * from employee where lastname = #{lastname} and password = #{password};
+    </select>
+</mapper>

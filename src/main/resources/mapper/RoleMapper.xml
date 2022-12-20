@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.employeemanageend.mapper.RoleMapper">
+
+    <select id="getallrole" resultType="role">
+        select * from role where id = #{rid};
+    </select>
+
+    <select id="getroles" resultType="role">
+        select * from role;
+    </select>
+
+    <select id="selectPage" resultType="role">
+        select * from role where name like CONCAT('%',#{rolename},'%') ORDER BY id desc limit #{pageNum},#{pageSize} ;
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(id) from role where name like CONCAT('%',#{rolename},'%');
+    </select>
+
+    <insert id="save" parameterType="com.example.employeemanageend.pojo.Role">
+<!--        <selectKey keyColumn="id" keyProperty="id" order="AFTER" resultType="int">-->
+<!--            select LAST_INSERT_ID()-->
+<!--        </selectKey>-->
+        INSERT INTO role (`name`, `createtime`, `updatetime`) VALUES (#{name},#{createtime},#{updatetime});
+    </insert>
+
+    <delete id="deleteRole">
+        delete from role where id = #{id};
+    </delete>
+
+    <update id="updateRole">
+        update role
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+        </set>
+            <where>
+                id = #{id}
+            </where>
+    </update>
+
+    <select id="selectId" resultType="int">
+        select id from role where name = #{role};
+    </select>
+
+</mapper>

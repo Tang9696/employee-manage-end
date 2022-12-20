@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.employeemanageend.mapper.MenuMapper">
+
+<!--    <select id="getallrole" resultType="menu">-->
+<!--        select * from menu where id = #{id};-->
+<!--    </select>-->
+    <select id="getByid" resultType="menu">
+        select * from menu where id = #{menuid};
+    </select>
+
+    <select id="findall" resultType="menu">
+        select * from menu where name like CONCAT('%',#{name},'%');
+    </select>
+
+    <select id="selectPage" resultType="menu">
+        select * from menu where name like CONCAT('%',#{name},'%') limit #{pageNum},#{pageSize} ;
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(id) from menu where name like CONCAT('%',#{name},'%');
+    </select>
+
+    <insert id="save" parameterType="menu">
+        INSERT INTO menu (`id`,`name`, `path`, `icon`,`descrip`,`pid`,`pagepath`) VALUES (null,#{name},#{path},#{icon},#{descrip},#{pid},#{pagepath});
+    </insert>
+
+
+    <delete id="deleteMenu">
+        delete from menu where id = #{id};
+    </delete>
+
+    <update id="updateMenu">
+        update menu
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="path != null">
+                path = #{path},
+            </if>
+            <if test="icon != null">
+                icon = #{icon},
+            </if>
+            <if test="descrip != null">
+                descrip = #{descrip},
+            </if>
+            <if test="pagepath != null">
+                pagepath = #{pagepath}
+            </if>
+        </set>
+            <where>
+                id = #{id}
+            </where>
+    </update>
+
+    <select id="getmenubymid" resultType="menu">
+        select * from menu where id in
+        <foreach collection="list" item="mids" open="(" close=")" separator=",">
+           #{mids}
+        </foreach>
+    </select>
+
+</mapper>

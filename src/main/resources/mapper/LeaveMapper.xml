@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.employeemanageend.mapper.LeaveMapper">
+<!-- 全部分页查询-->
+    <select id="selectPage" resultType="leave">
+        select * from leaves where name like CONCAT('%',#{name},'%') ORDER BY id desc limit #{pageNum},#{pageSize} ;
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(id) from leaves where name like CONCAT('%',#{name},'%');
+    </select>
+
+<!-- 个人分页查询-->
+    <select id="selectPagePersonal" resultType="leave">
+        select * from leaves where name like CONCAT('%',#{name},'%') and uid=#{uid} ORDER BY id desc limit #{pageNum},#{pageSize} ;
+    </select>
+
+    <select id="selectTotalPersonal" resultType="int">
+        select count(id) from leaves where name like CONCAT('%',#{name},'%') and uid=#{uid};
+    </select>
+
+    <!--请假-->
+    <insert id="save">
+        INSERT INTO leaves(`id`, `uid`, `name`, `dept`, `type`, `starttime`, `endtime`, `status`, `updatetime`)
+            VALUES (null, #{uid}, #{name}, #{dept}, #{type}, #{starttime}, #{endtime}, #{status}, #{updatetime});
+    </insert>
+
+    <!--查询个人假条信息-->
+    <select id="getPersonLeaves" resultType="leave">
+        select * from leaves where uid=#{id};
+    </select>
+
+    <!--查询所有假条信息-->
+    <select id="getAllLeaves" resultType="leave">
+        select * from leaves;
+    </select>
+
+    <!--更改请假状态-->
+    <update id="leaveUpdate">
+        update leaves set status=#{status} ,updatetime=#{updatetime} where id=#{id};
+    </update>
+
+    <!--删除-->
+    <delete id="leaveDel">
+        delete from leaves where id = #{id};
+    </delete>
+
+    <!--批量删除-->
+    <delete id="batchDeleteLeave">
+        delete from leaves where id in
+        <foreach collection="list" item="id"  separator="," open="(" close=")">
+            #{id}
+        </foreach>;
+    </delete>
+</mapper>
