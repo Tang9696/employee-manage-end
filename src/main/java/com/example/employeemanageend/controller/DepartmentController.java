@@ -45,7 +45,7 @@ public class DepartmentController {
 
 
     //add 部门
-    @PostMapping("/addrole")
+    @PostMapping("/adddept")
     public Result realadd(@RequestBody Department department){
         //添加dept表
         System.out.println(department.getDepartmentName());

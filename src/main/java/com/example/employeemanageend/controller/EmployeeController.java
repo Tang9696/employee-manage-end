@@ -75,17 +75,18 @@ public class EmployeeController {
         return Result.success();
     }
 
-//    //通过id查询员工信息
-//    @GetMapping("/empid")
-//    public Map<String,Object> updatePage(@RequestParam Integer id){
-//        System.out.println(id);
-//        Employee employee = employeeService.getEmployeeById(id);
-//        List<Department> departments = deptService.getDepartments();
-//        Map<String,Object> req = new HashMap<>();
-//        req.put("data",departments);
-//        req.put("emp",employee);
-//        return req;
-//    }
+    //通过id查询员工信息
+    @GetMapping("/empid/{id}")
+    public Map<String,Object> updatePage(@PathVariable("id") String id){
+        System.out.println(id);
+        Integer idnew = Integer.valueOf(id);
+        Employee employee = employeeService.getEmployeeById(idnew);
+        List<Department> departments = deptService.getDepartments();
+        Map<String,Object> req = new HashMap<>();
+        req.put("dept",departments);
+        req.put("emp",employee);
+        return req;
+    }
 
 
     //修改员工信息
