@@ -10,4 +10,14 @@ public interface DepartmentMapper {
     public Department getdept(@Param("id")Integer id);
 
     public List<Department> getdeptall();
+
+    List<Department> selectPage(Integer pageNum, Integer pageSize, String departmentName);
+
+    Integer selectTotal(String departmentName);
+
+    void save(Department department);
+
+    void deleteDept(Integer id);
+
+    void updateDept(Department department);
 }

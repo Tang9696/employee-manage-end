@@ -10,4 +10,32 @@
         select * from department;
     </select>
 
+    <select id="selectPage" resultType="department">
+        select * from department where departmentName like CONCAT('%',#{departmentName},'%') ORDER BY id desc limit #{pageNum},#{pageSize} ;
+    </select>
+
+    <select id="selectTotal" resultType="int">
+        select count(id) from department where departmentName like CONCAT('%',#{departmentName},'%');
+    </select>
+
+    <insert id="save" parameterType="department">
+        INSERT INTO department (`id`, `departmentName`, `createtime`, `updatetime`) VALUES (null,#{departmentName},#{createtime},#{updatetime});
+    </insert>
+
+    <delete id="deleteDept">
+        delete from department where id = #{id};
+    </delete>
+
+    <update id="updateDept">
+        update department
+        <set>
+            <if test="departmentName != null">
+                departmentName = #{departmentName},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
 </mapper>
