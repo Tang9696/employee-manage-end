@@ -32,7 +32,7 @@ The project is not uploaded to the server at the moment
 
 ### Swagger Integration
 The difficulty lies in the selection of the version and the configuration of the interceptor.
-In the actual development, you can also use Postman, I personally prefer to use Postman.
+In the actual development, you can also use Postman.
 ![image](https://user-images.githubusercontent.com/95304937/209448134-8b10a4e1-6817-4ac2-b9ba-400bb3d413ba.png)
 ![image](https://user-images.githubusercontent.com/95304937/209448183-4f637421-a5a4-4b07-a44d-9bda7561d982.png)
 
